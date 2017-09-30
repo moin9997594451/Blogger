@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Blogger</string>
+    <string name="post_title">Post Title</string>
+    <string name="post_description">Post Description</string>
+    <string name="submit_post">Submit Post</string>
+</resources>
