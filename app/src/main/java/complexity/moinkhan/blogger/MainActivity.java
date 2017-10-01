@@ -57,13 +57,14 @@ public class MainActivity extends AppCompatActivity {
         mBlogList = findViewById(R.id.blog_list);
         mBlogList.setHasFixedSize(true);
         mBlogList.setLayoutManager(new LinearLayoutManager(this));
+
+        checkUserExists();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        checkUserExists();
 
         mAuth.addAuthStateListener(mAuthListener);
 
@@ -83,23 +84,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkUserExists() {
-        final String userId = mAuth.getCurrentUser().getUid();
-        mDatabaseUsers.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.hasChild(userId)){
-                    Intent setupIntent = new Intent(MainActivity.this,SetupActivity.class);
-                    setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(setupIntent);
+        if (mAuth.getCurrentUser() != null){
+            final String userId = mAuth.getCurrentUser().getUid();
+            mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.hasChild(userId)){
+                        Intent setupIntent = new Intent(MainActivity.this,SetupActivity.class);
+                        setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(setupIntent);
+                    }
+
                 }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
+        }
     }
 
     public static class BlogViewHolder extends RecyclerView.ViewHolder{
