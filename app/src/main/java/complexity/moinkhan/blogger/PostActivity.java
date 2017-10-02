@@ -100,6 +100,9 @@ public class PostActivity extends AppCompatActivity {
                             newPost.child("username").setValue(dataSnapshot.child("name").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        startActivity(new Intent(PostActivity.this,MainActivity.class));
+                                    }
 
                                 }
                             });
@@ -113,7 +116,7 @@ public class PostActivity extends AppCompatActivity {
                     });
 
                     mProgress.dismiss();
-                    startActivity(new Intent(PostActivity.this,MainActivity.class));
+
                 }
             });
         }
