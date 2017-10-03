@@ -1,5 +1,6 @@
 package complexity.moinkhan.blogger;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -52,7 +53,7 @@ public class BlogSingleActivity extends AppCompatActivity {
                 mBlogSingleDesc.setText(post_desc);
                 Picasso.with(BlogSingleActivity.this).load(post_image).into(mBlogSingleImage);
 
-                if (mAuth.getCurrentUser().getUid() == post_uid){
+                if (mAuth.getCurrentUser().getUid().equals(post_uid)){
                     mSingleRemoveBtn.setVisibility(View.VISIBLE);
                 }
             }
@@ -63,6 +64,15 @@ public class BlogSingleActivity extends AppCompatActivity {
             }
         });
 
+        mSingleRemoveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDatabase.child(mPostKey).removeValue();
+                Intent mainIntent = new Intent(BlogSingleActivity.this,MainActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mainIntent);
+            }
+        });
 
     }
 }
